@@ -1,0 +1,41 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="p-8 border-2 border-gray-200 rounded-lg shadow-lg flex flex-col justify-center w-fit  mx-auto">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 pb-2 ">{{userInfo.fname.toUpperCase()}}
+        </h1>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 pb-8 ">{{userInfo.lname.toUpperCase()}}
+        </h1>
+
+        <p class="text-xl tracking-tight text-gray-600 pb-4"><span class="font-bold">member ID :</span>
+            {{userInfo.memberId}}</p>
+        <p class="text-xl tracking-tight text-gray-600 pb-4"><span class="font-bold">Email : </span> {{userInfo.email}}
+        </p>
+        <p class="text-2xl text-center tracking-tight text-gray-900 p-4 font-bold">🪙
+            {{userInfo.balance.toLocaleString('th-TH')}}
+            THB
+        </p>
+    </div>
+    <hr class="mt-12">
+    <div class="w-full max-w-7xl text-center flex flex-col items-center min-w-full">
+        <h1 class="font-bold text-3xl p-12">
+            Reserve History
+        </h1>
+        <table class="min-h-32 overflow-y-scroll">
+            <thead class="">
+                <tr class="">
+                    <th class="bg-gray-200 text-gray-900 px-14 py-4 rounded-tl-lg">Date</th>
+                    <th class="bg-gray-200 text-gray-900 px-14 py-4">Time</th>
+                    <th class="bg-gray-200 text-gray-900 px-14 py-4 rounded-tr-lg">Court</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of userInfo.reservation; track $index) {
+                <tr class="">
+                    <td class="py-2">{{item.date.split('T')[0]}}</td>
+                    <td class="py-2">{{item.time}}</td>
+                    <td class="py-2">{{item.courtNo}}</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

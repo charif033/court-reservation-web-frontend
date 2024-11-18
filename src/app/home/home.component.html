@@ -1,0 +1,100 @@
+<div class="bg-fixed bg-no-repeat bg-bottom bg-cover py-12 mx-auto"
+    style="background-image: url(assets/images/rb_2148189713.png);">
+
+    @if (!islogin) {
+    <app-loginform></app-loginform>
+    } @else {
+    <div class="flex flex-row justify-between items-center flex-wrap px-12 max-w-7xl mx-auto">
+        <div class="my-12">
+            <p class="text-3xl font-bold text-white pb-4 drop-shadow-md">
+                Hello,
+            </p>
+            <p class=" text-7xl font-bold text-white pb-4 drop-shadow-md">
+                {{userInfo.fname.toUpperCase()}}
+            </p>
+            <p class=" text-5xl font-bold text-white pb-4 drop-shadow-md text-wrap">
+                {{userInfo.lname.toUpperCase()}}
+            </p>
+            <p class="text-xl font-bold text-gray-200 py-4">#
+                {{userInfo.memberId}}</p>
+            <p class="text-xl font-bold text-gray-900 p-4 bg-white bg-opacity-80 w-fit rounded-lg">🪙
+                {{userInfo.balance.toLocaleString('th-TH')}} THB</p>
+        </div>
+        <div>
+            <div class="sm:mx-auto sm:w-auto sm:max-w-sm rounded-lg bg-white bg-opacity-80 px-4 py-8  shadow-lg">
+                <p class="text-center text-xl font-bold tracking-tight text-gray-900 py-4 border-b-2 border-gray-400">
+                    reservation
+                    history</p>
+                <table class="border-separate border-spacing-6 text-center">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Court</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of userInfo.reservation; track $index) {
+                        <tr class="">
+                            <td>{{item.date.split('T')[0]}}</td>
+                            <td>{{item.time}}</td>
+                            <td>{{item.courtNo}}</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="text-center py-4">
+                    <a href="/profile"
+                        class=" mx-2 py-2 px-4 text-gray-600 border-2 border-gray-600 rounded-lg font-bold hover:text-gray-400 hover:border-gray-400">Older
+                        history</a>
+                    <a href="/reserve"
+                        class=" mx-2 py-2 px-4 text-white bg-gray-600 border-2 border-gray-600 rounded-lg font-bold hover:bg-gray-700 hover:border-gray-700">Reserve</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    }
+
+</div>
+<div class=" flex justify-center py-12">
+    <div class="w-full max-w-7xl text-center">
+        <h1 class="font-bold text-3xl p-12">
+            <span class="animate-ping rounded-full bg-sky-400 opacity-90 w-5 h-5 mr-5 display: inline-block"></span>
+            Court Status
+        </h1>
+        <label for="checkDate" class="text-xl">DATE : </label>
+        <input id="checkDate" type="date" name="checkDate" class="rounded-full border-2" [(ngModel)]="inputDate"
+            (ngModelChange)="dateChange(inputDate)">
+        <div class="overflow-x-scroll w-full max-w-7xl">
+            <table class="border-separate border-spacing-8 min-w-full">
+                <thead class="">
+                    <tr class="">
+                        <th></th>
+                        <th>15:00-16:00</th>
+                        <th>16:00-17:00</th>
+                        <th>17:00-18:00</th>
+                        <th>18:00-19:00</th>
+                        <th>19:00-20:00</th>
+                        <th>20:00-21:00</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (court of courtStatus; track $index) {
+                    <tr>
+                        <td class="text-2xl font-bold sticky left-0 bg-white px-3">COURT {{$index+1}}</td>
+                        @for (reserve of court; track $index) {
+                        @if (reserve) {
+                        <td class="bg-red-500 rounded-lg text-white">Reserved</td>
+                        } @else {
+                        <td class="bg-green-500 rounded-lg text-white">Available</td>
+                        }
+                        }
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

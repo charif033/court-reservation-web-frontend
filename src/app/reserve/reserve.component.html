@@ -1,0 +1,65 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="p-8 border-2 border-gray-200 rounded-lg shadow-lg flex flex-col justify-center w-fit  mx-auto">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 pb-2 ">{{userInfo.fname.toUpperCase()}}
+        </h1>
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 pb-8 ">{{userInfo.lname.toUpperCase()}}
+        </h1>
+
+        <p class="text-xl tracking-tight text-gray-600 pb-4"><span class="font-bold">member ID :</span>
+            {{userInfo.memberId}}</p>
+        <p class="text-xl tracking-tight text-gray-600 pb-4"><span class="font-bold">Email : </span> {{userInfo.email}}
+        </p>
+        <p class="text-2xl text-center tracking-tight text-gray-900 p-4 font-bold">🪙
+            {{userInfo.balance.toLocaleString('th-TH')}}
+            THB
+        </p>
+    </div>
+    <hr class="mt-12">
+    <div class="w-full max-w-7xl text-center">
+        <h1 class="font-bold text-3xl p-12">
+            Reserve Court
+        </h1>
+        <form [formGroup]="reservationForm" (ngSubmit)="reservation()">
+            <label for="inputDate" class="text-xl">DATE : </label>
+            <input id="inputDate" type="date" name="inputDate" class="rounded-full border-2" required [value]="today()"
+                formControlName="inputDate" (ngModelChange)="dateChange(reservationForm.value.inputDate)">
+            <div class="overflow-x-scroll w-full max-w-7xl">
+                <table class="border-separate border-spacing-8 min-w-full">
+                    <thead class="">
+                        <tr class="">
+                            <th></th>
+                            <th>15:00-16:00</th>
+                            <th>16:00-17:00</th>
+                            <th>17:00-18:00</th>
+                            <th>18:00-19:00</th>
+                            <th>19:00-20:00</th>
+                            <th>20:00-21:00</th>
+                        </tr>
+                    </thead>
+
+                    <tbody *ngFor="let court of courtStatus; let i = index">
+                        <tr>
+                            <td class="text-2xl font-bold sticky left-0 bg-white px-3">COURT {{i+1}}</td>
+                            @for (reserve of court; track $index; let j = $index) {
+
+                            @if (reserve) {
+                            <td class="rounded-lg text-white bg-red-500"></td>
+                            }
+                            @else {
+                            <td class="rounded-lg text-white" [ngClass]="{'bg-red-500': reserve, 'bg-white': !reserve}">
+                                <input type="radio" name="courtNoandTimeIndex" [value]="i + 1 + ' ' + j"
+                                    class="scale-125 border-1 rounded-md" formControlName="courtNoandTimeIndex">
+                            </td>
+                            }
+                            }
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <input type="number" name="memberId" formControlName="memberId" hidden>
+            <button type="submit"
+                class="px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-500 w-full max-w-md font-bold">Reserve</button>
+        </form>
+    </div>
+</div>

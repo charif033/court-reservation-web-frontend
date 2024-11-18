@@ -1,0 +1,152 @@
+<div class="max-w-7xl mx-auto px-8 py-4 sm:px-12 sm:py-8">
+    <div class="flex flex-col flex-wrap gap-16 sm:flex-row">
+
+        <!-- toup -->
+        <div class="w-full sm:w-96 p-4 border-gray-200 border-2 shadow-lg rounded-lg">
+            <p class="text-3xl font-bold tracking-tight py-6 text-center">TOPUP</p>
+            <form [formGroup]="topupForm" (ngSubmit)="topup()" class="flex flex-col">
+                <div class="mt-2 flex flex-row items-center justify-between">
+                    <label for="memberId" class="block text-sm/6 font-medium text-gray-900 font-bold">Member ID</label>
+                    <input class="w-40 rounded-lg" type="number" name="memberId" id="memberId"
+                        formControlName="memberId" (input)="userlookup()">
+                </div>
+                <div class="mt-2 flex flex-row items-center justify-between">
+                    <label for="amount" class="block text-sm/6 font-medium text-gray-900 font-bold">Amount</label>
+                    <input class="w-40 rounded-lg" type="number" name="amount" id="amount" formControlName="amount">
+                </div>
+                <div class="mt-4 flex flex-row items-center justify-between">
+                    <p>Name : </p>
+                    <p>{{userLookup?.fname + " " + userLookup?.lname}}</p>
+                </div>
+                <div class="mt-4 flex flex-row items-center justify-between">
+                    <p>Balance : </p>
+                    <p>{{userLookup?.balance}}</p>
+                </div>
+                <button class="mt-4 px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-500" type="submit">
+                    Topup
+                </button>
+            </form>
+        </div>
+
+        <!-- transaction -->
+        <div class="w-full sm:w-96 p-4 border-gray-200 border-2 shadow-lg rounded-lg flex-1">
+            <p class="text-3xl font-bold tracking-tight py-6 text-center">Transaction</p>
+            <div class="max-h-64 overflow-y-auto">
+                <table class="min-w-full divide-y divide-gray-200 table-auto">
+                    <thead class="sticky top-0 bg-white">
+                        <tr>
+                            <th class="py-2 px-4 border-b border-gray-200">Date</th>
+                            <th class="py-2 px-4 border-b border-gray-200">Member ID</th>
+                            <th class="py-2 px-4 border-b border-gray-200">Member Name</th>
+                            <th class="py-2 px-4 border-b border-gray-200">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        @for (item of transaction; track $index) {
+                        <tr class="">
+                            <td class="py-2 px-4 border-b border-gray-200">{{item.date.split('T')[0]}}</td>
+                            <td class="py-2 px-4 border-b border-gray-200"># {{item.memberId}}</td>
+                            <td class="py-2 px-4 border-b border-gray-200">{{item.memberName[0].fname + " " +
+                                item.memberName[0].lname}}</td>
+                            <td class="py-2 px-4 border-b border-gray-200">{{item.amount}}</td>
+                            }
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="mt-16">
+
+        <!-- reservation history -->
+        <div class="w-full sm:w-full p-4 border-gray-200 border-2 shadow-lg rounded-lg flex-1">
+            <p class="text-3xl font-bold tracking-tight py-6 text-center">Reservation History</p>
+            <div class="max-h-96 overflow-y-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="sticky top-0 bg-white">
+                        <tr>
+                            <th class="py-2 px-4 border-b border-gray-200">Date</th>
+                            <th class="py-2 px-4 border-b border-gray-200">Time</th>
+                            <th class="py-2 px-4 border-b border-gray-200">Court</th>
+                            <th class="py-2 px-4 border-b border-gray-200">Member ID</th>
+                            <th class="py-2 px-4 border-b border-gray-200">Member Name</th>
+                            <th class="py-2 px-4 border-b border-gray-200"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        @for (item of reservation; track $index) {
+                        <tr class="">
+                            <td class="py-2 px-4 border-b border-gray-200">{{item.date.split('T')[0]}}</td>
+                            <td class="py-2 px-4 border-b border-gray-200">{{item.time}}</td>
+                            <td class="py-2 px-4 border-b border-gray-200">{{item.courtNo}}</td>
+                            <td class="py-2 px-4 border-b border-gray-200"># {{item.memberId}}</td>
+                            <td class="py-2 px-4 border-b border-gray-200">{{item.memberName[0].fname + " " +
+                                item.memberName[0].lname}}</td>
+                            <td><button class="rounded-lg px-2 py-1 text-red-600 font-bold"
+                                    (click)="cancelReservation(item._id)">Cancel</button>
+                            </td>
+                            }
+                    </tbody>
+                    <tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="mt-16">
+        <div class="w-full max-w-7xl text-center">
+            <h1 class="font-bold text-3xl p-12">
+                <span class="animate-ping rounded-full bg-sky-400 opacity-90 w-5 h-5 mr-5 display: inline-block"></span>
+                Court Status
+            </h1>
+            <label for="checkDate" class="text-xl">DATE : </label>
+            <input id="checkDate" type="date" name="checkDate" class="rounded-full border-2" [(ngModel)]="inputDate"
+                (ngModelChange)="dateChange(inputDate)">
+            <div class="overflow-x-scroll w-full max-w-7xl">
+                <table class="border-separate border-spacing-8 min-w-full">
+                    <thead class="">
+                        <tr class="">
+                            <th></th>
+                            <th>15:00-16:00</th>
+                            <th>16:00-17:00</th>
+                            <th>17:00-18:00</th>
+                            <th>18:00-19:00</th>
+                            <th>19:00-20:00</th>
+                            <th>20:00-21:00</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (court of courtStatus; track $index) {
+                        <tr>
+                            <td class="text-2xl font-bold sticky left-0 bg-white px-3">COURT {{$index+1}}</td>
+                            @for (reserve of court; track $index) {
+                            @if (reserve) {
+                            <td class="bg-red-500 rounded-lg text-white">
+                                {{reserve.fname.toUpperCase()}}</td>
+                            } @else {
+                            <td class="bg-green-500 rounded-lg text-white">Available</td>
+                            }
+                            }
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="mt-16">
+        <p class="text-3xl font-bold p-4">Feedback</p>
+        <hr>
+        <div class="p-4 flex flex-row overflow-x-auto gap-8">
+            @for (item of feedback; track $index) {
+            <div class="border-2 border-gray-200 rounded-lg shadow-lg w-96 min-h-64 flex-shrink-0 p-4">
+                <div class="pb-4">
+                    <p class="text-lg font-bold">{{item.name}}</p>
+                    <p class="text-gray-400"><span>{{item.memberId? '# '+item.memberId: ''}} </span> E-mail:
+                        {{item.email}}</p>
+                </div>
+                <hr>
+                <p class="pt-4">{{item.feedback}}</p>
+            </div>
+            }
+        </div>
+    </div>
+</div>
